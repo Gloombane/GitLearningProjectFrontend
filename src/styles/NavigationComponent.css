@@ -1,0 +1,185 @@
+.navbar {
+  background-color: #4caf50;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 4px solid #388e3c;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  margin-right: 24px;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.navbar-links li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.navbar-links li a,
+.plain-link-btn,
+.nav-button {
+  color: white;
+  text-decoration: none;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 0;
+  line-height: 1;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s;
+}
+
+.navbar-links li a:hover,
+.plain-link-btn:hover,
+.nav-button:hover {
+  color: #c8f7c5;
+}
+
+.navbar-search input {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  width: 240px;
+  max-width: 100%;
+}
+
+/* Модальное окно */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 24px 28px;
+  border-radius: 12px;
+  min-width: 320px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  font-size: 1.4rem;
+  color: #333;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* 🟢 Зеленая кнопка "Добавить" */
+.modal-buttons button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+
+.modal-buttons button:first-child:hover {
+  background-color: #388e3c;
+}
+
+/* ⚪ Серая кнопка "Отмена" */
+.modal-buttons button:last-child {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.modal-buttons button:last-child:hover {
+  background-color: #d5d5d5;
+}
+
+/* Выпадающее меню */
+.dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #66bb6a;
+  min-width: 160px;
+  z-index: 10;
+  border-radius: 4px;
+  overflow: hidden;
+  top: 100%;
+  left: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-content button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.dropdown-content button:hover {
+  background-color: #81c784;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
