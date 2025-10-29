@@ -1,54 +1,42 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import BookService from '../services/bookService';
-import BookCategoryService from '../services/bookCategoryService';
 import '../styles/ViewAllBooksComponent.css';
+import { useAuth } from '../components/AuthContext'; 
 
-const ViewAllBooksComponent = ({ searchQuery, selectedGenreId }) => {
+const ViewAllBooksComponent = ({ searchQuery, selectedGenreId, categories, addToBasket, basket }) => {
   const [books, setBooks] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [editingBook, setEditingBook] = useState(null);
   const [editedBook, setEditedBook] = useState({
     bookName: '',
     authorName: '',
     releaseDate: '',
     bookImage: '',
-    category: { categoryId: null }
+    categoryId: null,
+    quantity: 1
   });
 
   const [releaseDateError, setReleaseDateError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+
+  const { currentUser, userRole } = useAuth();
   const booksPerPage = 8;
 
-  useEffect(() => {
-    fetchBooks();
-  }, [selectedGenreId]);
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  const fetchBooks = () => {
+  const fetchBooks = useCallback(() => {
     BookService.getBooksFiltered(selectedGenreId)
       .then((response) => {
         const data = Array.isArray(response.data) ? response.data : [];
         setBooks(data);
-        setCurrentPage(1); // сброс страницы при смене фильтра
+        setCurrentPage(1);
       })
       .catch((error) => {
         console.error("Ошибка при загрузке книг:", error);
         setBooks([]);
       });
-  };
+  }, [selectedGenreId]);
 
-  const fetchCategories = () => {
-    BookCategoryService.getAllCategories()
-      .then((response) => {
-        setCategories(response.data);
-      })
-      .catch((error) => {
-        console.error("Ошибка при загрузке категорий:", error);
-      });
-  };
+  useEffect(() => {
+    fetchBooks();
+  }, [fetchBooks]);
 
   const handleDelete = (bookId) => {
     if (window.confirm("Вы уверены, что хотите удалить эту книгу?")) {
@@ -62,11 +50,17 @@ const ViewAllBooksComponent = ({ searchQuery, selectedGenreId }) => {
     }
   };
 
+  const handleTakeBook = (book) => {
+    alert(`Книга "${book.bookName}" взята пользователем!`);
+    addToBasket(book); 
+  };
+
   const openEditModal = (book) => {
     setEditingBook(book);
     setEditedBook({
       ...book,
-      category: { categoryId: book.category?.categoryId || '' }
+      categoryId: book.categoryId || '',
+      quantity: book.quantity || 1 // если нужно, можно добавить поле quantity в DTO
     });
     setReleaseDateError('');
   };
@@ -78,11 +72,10 @@ const ViewAllBooksComponent = ({ searchQuery, selectedGenreId }) => {
 
   const handleEditChange = (e) => {
     const { name, value } = e.target;
-
-    if (name === 'categoryId') {
+    if (name === 'categoryId' || name === 'quantity') {
       setEditedBook((prev) => ({
         ...prev,
-        category: { categoryId: parseInt(value) }
+        [name]: Number(value)
       }));
     } else {
       setEditedBook((prev) => ({
@@ -94,12 +87,10 @@ const ViewAllBooksComponent = ({ searchQuery, selectedGenreId }) => {
 
   const handleUpdate = () => {
     const today = new Date().toISOString().split("T")[0];
-
     if (editedBook.releaseDate > today) {
       setReleaseDateError("Дата выпуска не может быть в будущем.");
       return;
     }
-
     BookService.updateBook(editedBook.bookId, editedBook)
       .then(() => {
         fetchBooks();
@@ -171,11 +162,30 @@ const ViewAllBooksComponent = ({ searchQuery, selectedGenreId }) => {
                 <h3>{book.bookName}</h3>
                 <p><strong>Автор:</strong> {book.authorName}</p>
                 <p><strong>Дата выпуска:</strong> {book.releaseDate}</p>
-                <p><strong>Жанр:</strong> {book.bookCategory?.genre || 'Не указан'}</p>
-                <div className="button-group">
-                  <button className="edit-button" onClick={() => openEditModal(book)}>Изменить</button>
-                  <button className="delete-button" onClick={() => handleDelete(book.bookId)}>Удалить</button>
-                </div>
+                <p><strong>Жанр:</strong> {book.genre || 'Не указан'}</p>
+
+                {currentUser && (
+                  <div className="button-group">
+                    {userRole === "ROLE_ADMIN" && (
+                      <>
+                        <button className="edit-button" onClick={() => openEditModal(book)}>Изменить</button>
+                        <button className="delete-button" onClick={() => handleDelete(book.bookId)}>Удалить</button>
+                      </>
+                    )}
+                    <button
+  className="take-button"
+  onClick={() => handleTakeBook(book)}
+  disabled={basket.some(b => b.bookId === book.bookId) || book.quantity === 0}
+>
+  {book.quantity === 0 
+    ? "Нет в наличии" 
+    : basket.some(b => b.bookId === book.bookId) 
+      ? "Уже выбрана" 
+      : "Взять книгу"}
+</button>
+
+                  </div>
+                )}
               </div>
             </div>
           ))
@@ -230,7 +240,7 @@ const ViewAllBooksComponent = ({ searchQuery, selectedGenreId }) => {
               Жанр:
               <select
                 name="categoryId"
-                value={editedBook.category?.categoryId || ''}
+                value={editedBook.categoryId || ''}
                 onChange={handleEditChange}
               >
                 <option value="">Выберите жанр</option>
@@ -241,6 +251,17 @@ const ViewAllBooksComponent = ({ searchQuery, selectedGenreId }) => {
                 ))}
               </select>
             </label>
+            <label>
+              Количество:
+              <input
+                type="number"
+                name="quantity"
+                value={editedBook.quantity}
+                onChange={handleEditChange}
+                min="1"
+              />
+            </label>
+
             <div className="modal-buttons">
               <button className="save-button" onClick={handleUpdate}>Сохранить</button>
               <button className="cancel-button" onClick={closeModal}>Отмена</button>

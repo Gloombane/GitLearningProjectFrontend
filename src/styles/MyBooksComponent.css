@@ -1,0 +1,172 @@
+/* Контейнер страницы */
+.my-books-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+    min-height: 80vh;
+  }
+  
+  /* Заголовок */
+  .my-books-container .title {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    color: #333;
+    text-align: center;
+    font-weight: 600;
+  }
+  
+  /* Сообщение о пустой книге */
+  .books-empty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    font-size: 1.4rem;
+    color: #666;
+    text-align: center;
+  }
+  
+  .books-empty .books-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    animation: bounce 2s infinite;
+  }
+  
+  /* Список карточек */
+  .my-books-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  /* Карточка книги */
+  .my-book-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 12px;
+    background-color: #fafafa;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .my-book-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Изображение книги */
+  .my-book-image {
+    width: 100px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  /* Детали книги */
+  .my-book-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .my-book-details h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .my-book-details p {
+    margin: 4px 0;
+    color: #555;
+    font-size: 0.95rem;
+  }
+  
+  /* Кнопка "Вернуть" справа на карточке */
+  .return-button {
+    margin-left: auto;
+    background-color: #ff6b6b;
+    border: none;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .return-button:hover {
+    background-color: #ff4b4b;
+    transform: scale(1.05);
+  }
+  
+ /* Контейнер для кнопки "Вернуть все книги" */
+.books-actions {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Кнопка "Вернуть все книги" — теперь красная */
+  .return-all-button {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    background-color: #ff6b6b; /* 🔴 красная */
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .return-all-button:hover {
+    background-color: #ff4b4b;
+    transform: scale(1.05);
+  }
+  
+  
+  /* Анимации */
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+  }
+  
+  /* Сообщение загрузки */
+  .loading-text {
+    font-size: 1.4rem;
+    color: #555;
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  /* Адаптивность для мобильных */
+  @media (max-width: 600px) {
+    .my-book-card {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .my-book-image {
+      width: 80%;
+      height: auto;
+    }
+  
+    .return-button {
+      margin-left: 0;
+      margin-top: 8px;
+      width: 50%;
+    }
+  }
+  

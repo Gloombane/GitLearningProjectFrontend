@@ -29,6 +29,9 @@
   padding: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s;
+  /* ВЫРАВНИВАНИЕ ПО НИЗУ */
+  display: flex;
+  flex-direction: column;
 }
 
 .book-card:hover {
@@ -44,6 +47,13 @@
   background-color: #fff;
 }
 
+.book-details {
+  /* чтобы контент тянулся, а кнопки были внизу */
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 .book-details h3 {
   margin: 0 0 8px 0;
   font-size: 1.2rem;
@@ -56,21 +66,25 @@
 
 /* Кнопки */
 .button-group {
+  /* прижимаем к низу карточки */
+  margin-top: auto;
+
   display: flex;
-  justify-content: space-between;
-  margin-top: 12px;
+  flex-wrap: wrap;        /* разрешаем перенос */
+  gap: 8px;               /* зазор между кнопками */
 }
 
+/* первая строка: Изменить + Удалить поровну */
 .edit-button,
 .delete-button {
-  flex: 1;
+  flex: 1 1 calc(50% - 4px); /* две кнопки в строке */
   padding: 8px;
   border: none;
   border-radius: 8px;
   font-size: 0.9rem;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin: 0 4px;
+  margin: 0; /* убираем старые внешние отступы */
 }
 
 .edit-button {
@@ -89,6 +103,23 @@
 
 .delete-button:hover {
   background-color: #d32f2f;
+}
+
+/* вторая строка: "Взять книгу" на всю ширину */
+.take-button {
+  flex: 1 0 100%;          /* занимает всю следующую строку */
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px;           /* чуть выше, как “в корзину” */
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.take-button:hover {
+  background-color: #45a049;
 }
 
 /* Модальное окно */

@@ -10,12 +10,14 @@ const AddBookComponent = () => {
     authorName: '',
     releaseDate: '',
     bookImage: '',
-    categoryId: '' // <== изменено: теперь мы храним categoryId
+    categoryId: '',
+    quantity: ''   
   });
 
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
+  // Загрузка категорий при монтировании
   useEffect(() => {
     BookCategoryService.getAllCategories()
       .then((response) => {
@@ -38,10 +40,34 @@ const AddBookComponent = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Приводим categoryId к числу
+    // Проверка обязательных полей
+    if (!book.bookName.trim() ||
+        !book.authorName.trim() ||
+        !book.releaseDate ||
+        !book.categoryId ||
+        !book.quantity) {
+      alert("Пожалуйста, заполните все поля!");
+      return;
+    }
+
+    // Проверка количества
+    if (Number(book.quantity) < 1) {
+      alert("Количество должно быть не меньше 1!");
+      return;
+    }
+
+    // Проверка даты выпуска
+    const today = new Date().toISOString().split("T")[0];
+    if (book.releaseDate > today) {
+      alert("Дата выпуска не может быть в будущем!");
+      return;
+    }
+
+    // Подготовка объекта для отправки на бэкенд
     const bookToSend = {
       ...book,
-      categoryId: Number(book.categoryId)
+      categoryId: Number(book.categoryId),
+      quantity: Number(book.quantity)
     };
 
     BookService.addBook(bookToSend)
@@ -87,6 +113,7 @@ const AddBookComponent = () => {
             value={book.releaseDate}
             onChange={handleChange}
             required
+            max={new Date().toISOString().split("T")[0]}
           />
         </label>
         <label>
@@ -96,6 +123,7 @@ const AddBookComponent = () => {
             name="bookImage"
             value={book.bookImage}
             onChange={handleChange}
+            required
           />
         </label>
         <label>
@@ -114,6 +142,18 @@ const AddBookComponent = () => {
             ))}
           </select>
         </label>
+        <label>
+          Количество:
+          <input
+            type="number"
+            name="quantity"
+            value={book.quantity}
+            onChange={handleChange}
+            required
+            min="1"
+          />
+        </label>
+
         <button type="submit" className="submit-button">Добавить</button>
       </form>
     </div>

@@ -1,4 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
+axios.defaults.withCredentials = true;
+
 
 const BOOK_API_BASE_URL = "http://localhost:8080/api/books";
 
@@ -31,9 +33,24 @@ getBooksFiltered(categoryId = null) {
     return axios.delete(`${BOOK_API_BASE_URL}/delete/${bookId}`);
   }
 
+// Взять книгу
+borrowBook(bookId) {
+  return axios.post(`${BOOK_API_BASE_URL}/${bookId}/borrow`);
+}
+
+// Вернуть книгу (если реализуешь)
+returnBook(bookId) {
+  return axios.post(`${BOOK_API_BASE_URL}/${bookId}/return`);
+}
+
+// Получить список моих взятых книг
+getMyBooks() {
+  return axios.get(`${BOOK_API_BASE_URL}/my`);
+}
 
 
 
 }
 
-export default new BookService();
+const bookService = new BookService();
+export default bookService;

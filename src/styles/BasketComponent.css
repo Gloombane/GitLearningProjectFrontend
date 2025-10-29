@@ -1,0 +1,150 @@
+/* Контейнер корзины */
+.basket-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+    min-height: 80vh;
+}
+
+/* Заголовок */
+.basket-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    color: #333;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Список карточек */
+.basket-cards-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Карточка книги */
+.basket-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 12px;
+    background-color: #fafafa;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.basket-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+.basket-card img {
+    width: 100px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Детали книги */
+.basket-book-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.basket-book-details h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.basket-book-details p {
+    margin: 4px 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+/* Красный крестик для удаления */
+.remove-cross {
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    color: #e53935;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.remove-cross:hover {
+    color: #c62828;
+    transform: scale(1.2);
+}
+
+/* Сообщение о пустой корзине */
+.basket-empty {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #666;
+    text-align: center;
+    padding: 20px;
+}
+
+.basket-empty .basket-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    animation: bounce 2s infinite;
+}
+
+/* Контейнер для кнопки подтверждения */
+.basket-actions {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* кнопка по центру */
+}
+
+/* Кнопка подтверждения */
+.confirm-button {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.confirm-button:hover {
+    background-color: #388e3c;
+    transform: scale(1.05);
+}
+
+/* Суммарная информация о корзине */
+.basket-summary {
+    margin-top: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    text-align: right;
+}
+
+/* Анимации */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}

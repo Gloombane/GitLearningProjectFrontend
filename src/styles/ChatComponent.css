@@ -1,0 +1,276 @@
+/* ========================================================= */
+/* 🌱 Общие стили */
+/* ========================================================= */
+
+.chat-wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2000;
+  font-family: inherit;
+}
+
+/* 🚫 Скрыть чат у гостей */
+.chat-hidden {
+  display: none !important;
+}
+
+/* 🔘 Кнопка открытия чата */
+.chat-toggle-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.chat-toggle-btn:hover {
+  background-color: #388e3c;
+  transform: scale(1.05);
+}
+
+/* ========================================================= */
+/* 💬 Обычный чат (пользователь) */
+/* ========================================================= */
+
+.chat-window {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  width: 320px;
+  height: 440px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 2px solid #4caf50;
+}
+
+/* Заголовок */
+.chat-header {
+  background: #4caf50;
+  color: white;
+  padding: 10px 14px;
+  font-weight: 500;
+  border-bottom: 2px solid #388e3c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-header button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.chat-header button:hover {
+  color: #c8f7c5;
+}
+
+/* Сообщения */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+  background: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chat-message {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #e8f5e9;
+  align-self: flex-start;
+  max-width: 80%;
+  word-wrap: break-word;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.chat-message.mine {
+  background: #c8e6c9;
+  align-self: flex-end;
+}
+
+/* Поле ввода */
+.chat-input {
+  display: flex;
+  border-top: 1px solid #ccc;
+  background: #fff;
+}
+
+.chat-input input {
+  flex: 1;
+  border: none;
+  padding: 10px;
+  outline: none;
+  font-size: 1rem;
+  border-bottom-left-radius: 10px;
+}
+
+.chat-input button {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-bottom-right-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.chat-input button:hover {
+  background: #388e3c;
+}
+
+/* ========================================================= */
+/* 🧩 Админский чат с вкладками пользователей */
+/* ========================================================= */
+
+.admin-chat {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  width: 520px;
+  height: 480px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #4caf50;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 🔹 Панель с пользователями сверху */
+.chat-users-bar {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  background: #f1f8f1;
+  border-bottom: 2px solid #4caf50;
+  overflow-x: auto;
+  min-height: 38px;
+}
+
+.no-users {
+  color: #777;
+  font-style: italic;
+  padding: 8px;
+}
+
+/* 🔸 Вкладка пользователя */
+.user-tab {
+  display: flex;
+  align-items: center;
+  background: #e8f5e9;
+  border: 1px solid #4caf50;
+  border-radius: 8px;
+  padding: 4px 6px;
+  min-width: 90px;
+  justify-content: space-between;
+  transition: background-color 0.2s;
+}
+
+.user-tab.active {
+  background: #c8e6c9;
+  font-weight: 600;
+}
+
+/* Имя пользователя */
+.user-name {
+  background: none;
+  border: none;
+  color: #2e7d32;
+  cursor: pointer;
+  font-weight: 500;
+  flex: 1;
+  text-align: left;
+}
+
+.user-name:hover {
+  text-decoration: underline;
+}
+
+/* Крестик */
+.close-user {
+  background: none;
+  border: none;
+  color: #777;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 4px;
+  transition: color 0.2s;
+}
+
+.close-user:hover {
+  color: #d32f2f;
+}
+
+/* Основное тело админского чата */
+.admin-chat-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f9f9f9;
+}
+
+.admin-chat-body .chat-messages {
+  flex: 1;
+  padding: 10px 12px;
+  overflow-y: auto;
+}
+
+.admin-chat-body .chat-input {
+  border-top: 1px solid #ccc;
+  display: flex;
+}
+
+/* Если пользователь не выбран */
+.no-user-selected {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-style: italic;
+}
+
+/* ========================================================= */
+/* 📱 Адаптивность */
+/* ========================================================= */
+
+@media (max-width: 480px) {
+  .chat-window,
+  .admin-chat {
+    width: 280px;
+    height: 380px;
+  }
+
+  .chat-toggle-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  .chat-users-bar {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .user-tab {
+    min-width: 80px;
+  }
+}

@@ -2,22 +2,24 @@
   background-color: #4caf50;
   padding: 12px 24px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* логика: слева - ссылки, справа - поиск */
   align-items: center;
   border-bottom: 4px solid #388e3c;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Левая часть (логотип + ссылки) */
 .navbar-left {
   display: flex;
   align-items: center;
+  gap: 16px;
 }
 
 .navbar-logo {
   font-size: 1.5rem;
   font-weight: bold;
   color: white;
-  margin-right: 24px;
+  margin-right: 8px;
 }
 
 .navbar-links {
@@ -36,6 +38,7 @@
   height: 100%;
 }
 
+/* Ссылки и кнопки в списке выровнены одинаково */
 .navbar-links li a,
 .plain-link-btn,
 .nav-button {
@@ -61,14 +64,23 @@
   color: #c8f7c5;
 }
 
-.navbar-search input {
+/* Правая часть: поиск — находится справа, но с небольшим отступом от края */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  margin-right: 18px; /* <-- сдвигает поиск влево от правого края */
+}
+
+/* Поисковое поле — ширина по вкусу, placeholder виден целиком */
+.navbar-search-input {
   padding: 8px 12px;
   border: none;
   border-radius: 6px;
   font-size: 1rem;
   outline: none;
-  width: 240px;
+  width: 260px; /* можно уменьшить/увеличить под вкус */
   max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Модальное окно */
@@ -183,3 +195,38 @@
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
+/* Адаптив: на очень узких экранах делаем ширину поиска меньше */
+@media (max-width: 520px) {
+  .navbar-search-input {
+    width: 160px;
+  }
+  .navbar-left {
+    gap: 10px;
+  }
+  .navbar-links {
+    gap: 10px;
+  }
+}
+/* Кнопки "Войти"/"Выйти" */
+.nav-auth-btn {
+  background-color: #4caf50; /* зелёный фон */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: 12px; /* <-- расстояние от поиска */
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+.nav-auth-btn:hover {
+  background-color: #388e3c; /* тёмно-зелёный при hover */
+}
+

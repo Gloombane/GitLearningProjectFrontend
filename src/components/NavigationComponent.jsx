@@ -2,54 +2,43 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import BookCategoryService from '../services/bookCategoryService';
 import '../styles/NavigationComponent.css';
+import { useAuth } from '../components/AuthContext';
 
-const NavigationComponent = ({ onSearch, onGenreChange }) => {
+const NavigationComponent = ({ onSearch, onGenreChange, categories, setCategories, basketCount }) => {
   const [showModal, setShowModal] = useState(false);
   const [genre, setGenre] = useState('');
-  const [categories, setCategories] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const { currentUser, userRole, logOut } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  const fetchCategories = async () => {
-    try {
-      const response = await BookCategoryService.getAllCategories();
-      setCategories(response.data);
-    } catch (error) {
-      console.error('Ошибка при загрузке категорий:', error);
-    }
-  };
+  useEffect(() => {}, [currentUser, userRole]);
 
   const handleAddCategory = async () => {
-    if (!genre.trim()) return;
+    if (!genre.trim()) {
+      alert("Название категории не может быть пустым");
+      return;
+    }
 
     try {
-      await BookCategoryService.addCategory({ genre });
+      const response = await BookCategoryService.addCategory({ genre });
       alert('Категория успешно добавлена!');
+      setCategories(prev => [...prev, response.data]);
       setGenre('');
       setShowModal(false);
-      fetchCategories();
     } catch (error) {
-      const message =
-        error.response?.data?.message ||
-        'Произошла ошибка при добавлении категории';
+      const message = error.response?.data?.message || 'Произошла ошибка при добавлении категории';
       alert(message);
     }
   };
 
-  const handleGenreChange = (genreId) => {
+  const handleGenreSelect = (genreId) => {
     onGenreChange(genreId === 'all' ? null : genreId);
-    navigate('/'); // Или '/books', если ты отображаешь книги там
+    navigate('/');
     setDropdownOpen(false);
   };
 
-  const handleInputChange = (e) => {
-    onSearch(e.target.value);
-  };
+  const handleInputChange = (e) => onSearch(e.target.value);
 
   return (
     <>
@@ -65,31 +54,61 @@ const NavigationComponent = ({ onSearch, onGenreChange }) => {
               <button className="nav-button">Книги ▾</button>
               {dropdownOpen && (
                 <div className="dropdown-content">
-                  <button onClick={() => handleGenreChange('all')}>Все жанры</button>
+                  <button onClick={() => handleGenreSelect('all')}>Все жанры</button>
                   {categories.map((cat) => (
-                    <button key={cat.categoryId} onClick={() => handleGenreChange(cat.categoryId)}>
+                    <button key={cat.categoryId} onClick={() => handleGenreSelect(cat.categoryId)}>
                       {cat.genre}
                     </button>
                   ))}
                 </div>
               )}
             </li>
-            <li>
-              <Link to="/add-book">Добавить книгу</Link>
-            </li>
-            <li>
-              <button className="plain-link-btn" onClick={() => setShowModal(true)}>
-                Добавить категорию
-              </button>
-            </li>
+
+            {currentUser && userRole === "ROLE_ADMIN" && (
+              <>
+                <li><Link to="/add-book">Добавить книгу</Link></li>
+                <li><button className="plain-link-btn" onClick={() => setShowModal(true)}>Добавить категорию</button></li>
+                <li><Link to="/categories">Показать категории</Link></li>
+              </>
+            )}
           </ul>
         </div>
-        <div className="navbar-search">
+
+        <div className="navbar-right">
           <input
+            className="navbar-search-input"
             type="text"
-            placeholder="Поиск по названию или автору..."
+            placeholder="Поиск - название/автор"
             onChange={handleInputChange}
           />
+
+          {/* 🟢 Иконка корзины только для авторизованных пользователей (не админов) */}
+          {currentUser && (
+            <button
+              className="nav-auth-btn"
+              style={{ marginLeft: '10px' }}
+              onClick={() => navigate('/basket')}
+            >
+              🛒 {basketCount > 0 && <span>({basketCount})</span>}
+            </button>
+          )}
+
+          {/* 📖 Мои книги — для всех авторизованных пользователей */}
+          {currentUser && (
+            <button
+              className="nav-auth-btn"
+              style={{ marginLeft: '10px' }}
+              onClick={() => navigate('/my-books')}
+            >
+              📖 Мои книги
+            </button>
+          )}
+
+          {currentUser ? (
+            <button className="nav-auth-btn" onClick={logOut} style={{ marginLeft: '10px' }}>Выйти</button>
+          ) : (
+            <Link to="/login" className="nav-auth-btn" style={{ marginLeft: '10px' }}>Войти</Link>
+          )}
         </div>
       </nav>
 

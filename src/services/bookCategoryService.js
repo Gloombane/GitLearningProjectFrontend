@@ -1,4 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
+axios.defaults.withCredentials = true;
+
 
 const BOOK_CATEGORY_API_BASE_URL = "http://localhost:8080/api/categories";
 
@@ -30,4 +32,6 @@ class BookCategoryService {
   }
 }
 
-export default new BookCategoryService();
+const bookCategoryService = new BookCategoryService();
+export default bookCategoryService;
+
